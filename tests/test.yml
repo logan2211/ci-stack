@@ -17,3 +17,22 @@
 
 # Build the CI cluster
 - include: "{{ playbook_dir }}/../playbooks/site.yml"
+
+- name: Check the zookeeper functional status
+  hosts: zookeeper
+  pre_tasks:
+    - name: Gather variables for each operating system
+      include_vars: "{{ item }}"
+      with_first_found:
+        - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+        - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+        - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+        - "{{ ansible_distribution | lower }}.yml"
+        - "{{ ansible_os_family | lower }}.yml"
+    - name: Install test packages
+      package:
+        name: "{{ tests_zookeeper_packages }}"
+  tasks:
+    - name: Check zookeeper mode
+      shell: echo 'stat' | nc localhost 2181 | grep Mode
+      changed_when: false
