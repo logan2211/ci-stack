@@ -1,0 +1,26 @@
+[all]
+localhost ansible_connection=local ansible_become=True
+
+[zookeeper]
+zookeeper1
+zookeeper2
+zookeeper3
+
+[nodepool]
+nodepool1
+
+[zuul]
+zuul1
+
+[docker_containers:children]
+zookeeper
+nodepool
+zuul
+
+[docker_containers:vars]
+physical_host=localhost
+ansible_host="{{ inventory_hostname }}"
+ansible_connection=docker
+docker_privileged=yes
+docker_user=root
+docker_network_name=citestnet

@@ -1,0 +1,17 @@
+---
+- name: java
+  scm: git
+  src: https://github.com/geerlingguy/ansible-role-java
+  version: master
+- name: nodepool
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-role-nodepool
+  version: master
+- name: zookeeper
+  scm: git
+  src: https://github.com/AnsibleShipyard/ansible-zookeeper
+  version: master
+- name: zuul
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-role-zuul
+  version: master
