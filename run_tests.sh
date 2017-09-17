@@ -17,6 +17,15 @@ set -euov
 
 FUNCTIONAL_TEST=${FUNCTIONAL_TEST:-true}
 
+source /etc/os-release
+export docker_image=quay.io/loganv/docker-ci \
+       docker_command=/lib/systemd/systemd
+if [[ "$ID" == "centos" ]]; then
+  export docker_image_tag="$ID-$VERSION_ID"
+elif [[ "$ID" == "ubuntu" ]]; then
+  export docker_image_tag="$ID-$UBUNTU_CODENAME"
+fi
+
 # prep the host
 if [ "$(which apt-get)" ]; then
   apt-get update && apt-get install -y build-essential python2.7 python-dev git-core libffi-dev libssl-dev
