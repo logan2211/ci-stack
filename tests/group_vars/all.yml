@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: galera-install.yml
-- include: gerrit-install.yml
-- include: zookeeper-install.yml
-- include: nodepool-install.yml
-- include: zuul-install.yml
+galera_root_user: root
+galera_root_password: secrete
+
+gerrit_mariadb_address: "{{ groups['mariadb'][0] }}"
+gerrit_mariadb_username: gerrit
+gerrit_mariadb_password: secrete
+gerrit_mariadb_dbname: gerrit

@@ -1,4 +1,20 @@
 ---
+- name: apt_package_pinning
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
+  version: master
+- name: galera_client
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-galera_client
+  version: master
+- name: galera_server
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-galera_server
+  version: master
+- name: gerrit
+  scm: git
+  src: https://github.com/mrlesmithjr/ansible-gerrit
+  version: master
 - name: java
   scm: git
   src: https://github.com/geerlingguy/ansible-role-java
@@ -6,6 +22,10 @@
 - name: nodepool
   scm: git
   src: https://git.openstack.org/openstack/ansible-role-nodepool
+  version: master
+- name: pip_install
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
   version: master
 - name: zookeeper
   scm: git

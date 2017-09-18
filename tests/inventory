@@ -1,20 +1,28 @@
 [all]
 localhost ansible_connection=local ansible_become=True
 
+[gerrit]
+gerrit1
+
+[mariadb]
+mariadb1
+
+[nodepool]
+nodepool1
+
 [zookeeper]
 zookeeper1
 zookeeper2
 zookeeper3
 
-[nodepool]
-nodepool1
-
 [zuul]
 zuul1
 
 [docker_containers:children]
-zookeeper
+gerrit
+mariadb
 nodepool
+zookeeper
 zuul
 
 [docker_containers:vars]

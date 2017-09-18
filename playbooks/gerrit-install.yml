@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: galera-install.yml
-- include: gerrit-install.yml
-- include: zookeeper-install.yml
-- include: nodepool-install.yml
-- include: zuul-install.yml
+- name: Install Gerrit
+  hosts: "{{ gerrit_group | default('gerrit') }}"
+  roles:
+    - galera_client
+    - gerrit
+  vars:
+    gerrit_db_info:
+      - host: "{{ gerrit_mariadb_address }}"
+        type: mysql
+        db: "{{ gerrit_mariadb_dbname }}"
+        user: "{{ gerrit_mariadb_username }}"
+        pass: "{{ gerrit_mariadb_password }}"
