@@ -1,4 +1,8 @@
 ---
+- name: diskimage-builder
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-role-diskimage-builder
+  version: master
 - name: java
   scm: git
   src: https://github.com/geerlingguy/ansible-role-java
