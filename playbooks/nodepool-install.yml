@@ -16,6 +16,7 @@
 - name: Install Nodepool
   hosts: "{{ nodepool_group | default('nodepool') }}"
   roles:
+    - diskimage-builder
     - nodepool
   vars:
     nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml"
