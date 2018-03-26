@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Nodepool requires python3
+nodepool_pip_virtualenv_python: /usr/bin/python3
+
 nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml"
 
 zookeeper_servers: "{{ groups[zookeeper_group | default('zookeeper')] }}"
