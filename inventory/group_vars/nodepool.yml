@@ -24,6 +24,7 @@ zookeeper_servers: "{{ groups[zookeeper_group | default('zookeeper')] }}"
 nodepool_config: "{{ nodepool_base_config | combine(nodepool_extra_config,
                                                     recursive=True) }}"
 nodepool_base_config:
+  elements-dir: /opt/nodepool/elements
   images-dir: /opt/nodepool/images
   zookeeper-servers: |-
     {% set _servers = [] %}

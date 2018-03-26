@@ -36,3 +36,18 @@
       with_items:
         - nodepool-builder
         - nodepool-launcher
+    - name: Copy nodepool clouds.yaml
+      when:
+        - nodepool_clouds_yaml is defined
+      block:
+      - name: Ensure target directory
+        file:
+          path: "{{ nodepool_user_home }}/.config/openstack"
+          state: directory
+      - name: Copy clouds.yaml to nodepool homedir if provided
+        copy:
+          src: "{{ nodepool_clouds_yaml }}"
+          dest: "{{ nodepool_user_home }}/.config/openstack/clouds.yaml"
+          owner: "{{ nodepool_user_name }}"
+          group: "{{ nodepool_user_group }}"
+          mode: '0640'
