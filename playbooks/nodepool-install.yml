@@ -36,6 +36,17 @@
       with_items:
         - nodepool-builder
         - nodepool-launcher
+    - name: Ensure nodepool directories
+      file:
+        path: "{{ nodepool_config[item] }}"
+        state: directory
+        owner: "{{ nodepool_user_name }}"
+        group: "{{ nodepool_user_group }}"
+      with_items:
+        - elements-dir
+        - images-dir
+      when:
+        - nodepool_config[item] is defined
     - name: Copy nodepool clouds.yaml
       when:
         - nodepool_clouds_yaml is defined
