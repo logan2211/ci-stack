@@ -15,6 +15,24 @@
 
 - name: Install Nodepool
   hosts: "{{ nodepool_group | default('nodepool') }}"
+  pre_tasks:
+    - name: Create venv base path
+      file:
+        path: "{{ nodepool_pip_virtualenv | dirname }}"
+        state: directory
   roles:
     - diskimage-builder
     - nodepool
+  post_tasks:
+    - name: Drop systemd service overrides for venv prefix
+      copy:
+        content: |
+          [Service]
+          Environment="PREFIX={{ nodepool_pip_virtualenv.rstrip('/') }}"
+        dest: "/etc/systemd/system/{{ item }}.service.d/99-venvprefix.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      with_items:
+        - nodepool-builder
+        - nodepool-launcher

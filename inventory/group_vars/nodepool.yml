@@ -15,6 +15,7 @@
 
 # Nodepool requires python3
 nodepool_pip_virtualenv_python: /usr/bin/python3
+nodepool_pip_virtualenv: "{{ cistack_venv_base }}/nodepool"
 
 nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml"
 
