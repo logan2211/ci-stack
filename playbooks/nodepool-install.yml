@@ -36,6 +36,14 @@
       with_items:
         - nodepool-builder
         - nodepool-launcher
+    - name: Allow passwordless sudo for nodepool
+      lineinfile:
+        dest: /etc/sudoers.d/nodepool
+        create: yes
+        state: present
+        regexp: '^%nodepool'
+        line: '%nodepool ALL=NOPASSWD: ALL'
+        validate: visudo -cf %s
     - name: Ensure nodepool directories
       file:
         path: "{{ nodepool_config[item] }}"
