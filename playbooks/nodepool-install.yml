@@ -15,8 +15,68 @@
 
 - name: Install Nodepool
   hosts: "{{ nodepool_group | default('nodepool') }}"
+  pre_tasks:
+    - name: Create venv base path
+      file:
+        path: "{{ nodepool_pip_virtualenv | dirname }}"
+        state: directory
   roles:
     - diskimage-builder
     - nodepool
-  vars:
-    nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml"
+  post_tasks:
+    - name: Drop systemd service overrides for venv prefix
+      copy:
+        content: |
+          [Service]
+          Environment="PREFIX={{ nodepool_pip_virtualenv.rstrip('/') }}"
+        dest: "/etc/systemd/system/{{ item }}.service.d/99-venvprefix.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      with_items:
+        - nodepool-builder
+        - nodepool-launcher
+    - name: Allow passwordless sudo for nodepool
+      lineinfile:
+        dest: /etc/sudoers.d/nodepool
+        create: yes
+        state: present
+        regexp: '^%nodepool'
+        line: '%nodepool ALL=NOPASSWD: ALL'
+        validate: visudo -cf %s
+    - name: Ensure nodepool directories
+      file:
+        path: "{{ nodepool_config[item] }}"
+        state: directory
+        owner: "{{ nodepool_user_name }}"
+        group: "{{ nodepool_user_group }}"
+      with_items:
+        - elements-dir
+        - images-dir
+      when:
+        - nodepool_config[item] is defined
+    - name: Copy nodepool clouds.yaml
+      when:
+        - nodepool_clouds_yaml is defined
+      block:
+      - name: Ensure target directory
+        file:
+          path: "{{ nodepool_user_home }}/.config/openstack"
+          state: directory
+      - name: Copy clouds.yaml to nodepool homedir if provided
+        copy:
+          src: "{{ nodepool_clouds_yaml }}"
+          dest: "{{ nodepool_user_home }}/.config/openstack/clouds.yaml"
+          owner: "{{ nodepool_user_name }}"
+          group: "{{ nodepool_user_group }}"
+          mode: '0640'
+    - name: Upload custom DIB elements
+      synchronize:
+        src: "{{ nodepool_local_dib_elements.rstrip('/') }}/"
+        dest: "{{ nodepool_config['elements-dir'] }}/"
+        delete: yes
+        rsync_opts:
+          - "--chown={{ nodepool_user_name }}:{{ nodepool_user_group }}"
+      when:
+        - nodepool_local_dib_elements is defined
+        - "'elements-dir' in nodepool_config"

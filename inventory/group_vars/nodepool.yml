@@ -1,0 +1,50 @@
+---
+# Copyright 2018, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Nodepool requires python3
+nodepool_pip_virtualenv_python: /usr/bin/python3
+nodepool_pip_virtualenv: "{{ cistack_venv_base }}/nodepool"
+
+nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml"
+
+zookeeper_servers: "{{ groups[zookeeper_group | default('zookeeper')] }}"
+
+nodepool_config: "{{ nodepool_base_config | combine(nodepool_extra_config,
+                                                    recursive=True) }}"
+nodepool_base_config:
+  elements-dir: /opt/nodepool/elements
+  images-dir: /opt/nodepool/images
+  zookeeper-servers: |-
+    {% set _servers = [] %}
+    {% for host in zookeeper_servers %}
+    {%   set _server = {
+               'host': hostvars[host]['ansible_host'] | default(host),
+               'port': hostvars[host]['client_port'] | default('2181')
+             }
+    %}
+    {%   set _ = _servers.append(_server) %}
+    {% endfor %}
+    {{ _servers }}
+  diskimages: "{{ nodepool_diskimages }}"
+  labels: "{{ nodepool_labels }}"
+  providers: "{{ nodepool_providers }}"
+
+nodepool_extra_config: {}
+nodepool_diskimages: []
+nodepool_labels: []
+nodepool_providers: []
+
+# Upload custom DIB elements to the nodepool installation
+# nodepool_local_dib_elements: /opt/dib_elements
