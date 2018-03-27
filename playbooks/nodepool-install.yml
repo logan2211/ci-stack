@@ -70,3 +70,13 @@
           owner: "{{ nodepool_user_name }}"
           group: "{{ nodepool_user_group }}"
           mode: '0640'
+    - name: Upload custom DIB elements
+      synchronize:
+        src: "{{ nodepool_local_dib_elements.rstrip('/') }}/"
+        dest: "{{ nodepool_config['elements-dir'] }}/"
+        delete: yes
+        rsync_opts:
+          - "--chown={{ nodepool_user_name }}:{{ nodepool_user_group }}"
+      when:
+        - nodepool_local_dib_elements is defined
+        - "'elements-dir' in nodepool_config"

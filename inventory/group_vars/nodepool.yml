@@ -45,3 +45,6 @@ nodepool_extra_config: {}
 nodepool_diskimages: []
 nodepool_labels: []
 nodepool_providers: []
+
+# Upload custom DIB elements to the nodepool installation
+# nodepool_local_dib_elements: /opt/dib_elements
