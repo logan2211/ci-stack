@@ -15,4 +15,7 @@
 
 cistack_venv_base: /opt/ci-stack/venvs
 
+# Generated SSH keys and other items stored here
+cistack_cache_path: "{{ playbook_dir }}/../cache"
+
 zookeeper_servers: "{{ groups[zookeeper_group | default('zookeeper')] }}"

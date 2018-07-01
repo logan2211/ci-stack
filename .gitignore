@@ -66,3 +66,6 @@ tests/plugins
 inventory/*
 !inventory/base
 !inventory/group_vars
+
+cache/*
+!cache/.gitkeep
