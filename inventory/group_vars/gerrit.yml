@@ -17,3 +17,11 @@ gerrit_mariadb_address: "{{ groups['mariadb'][0] }}"
 gerrit_mariadb_username: gerrit
 gerrit_mariadb_password: secrete
 gerrit_mariadb_dbname: gerrit
+
+gerrit_allow_remote_admin: yes
+
+gerrit_ssh_address: "{{ ansible_host | default(inventory_hostname) }}"
+gerrit_ssh_port: 29418
+zuul_connection:
+  user: zuul
+  sshkey_name: gerrit

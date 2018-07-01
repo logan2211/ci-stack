@@ -19,6 +19,7 @@
     - galera_client
     - gerrit
   vars:
+    gerrit_sshd_listen_port: "{{ gerrit_ssh_port }}"
     gerrit_db_info:
       - host: "{{ gerrit_mariadb_address }}"
         type: mysql

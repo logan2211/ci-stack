@@ -46,5 +46,25 @@ zuul_connections_base:
   zuul-jobs:
     driver: git
     baseurl: https://git.zuul-ci.org
+zuul_connections_gerrit: |-
+  {% set _gerrit_connections = {} %}
+  {% for gerrit_host in groups[gerrit_group | default('gerrit')] | default([]) %}
+  {%   if hostvars[gerrit_host]['zuul_connection'] is defined %}
+  {%     set _gerrit_connection = hostvars[gerrit_host]['zuul_connection'] %}
+  {%     set _ = _gerrit_connections.update({
+           'gerrit_' ~ gerrit_host: _gerrit_connection |
+             combine(
+               {'driver': 'gerrit',
+                'server': hostvars[gerrit_host]['gerrit_ssh_address'],
+                'port': hostvars[gerrit_host]['gerrit_ssh_port'],
+                'sshkey': zuul_user_home ~ '/.ssh/' ~ _gerrit_connection.sshkey_name | default('gerrit') ~ '_id_rsa'}
+             )
+         })
+  %}
+  {%   endif %}
+  {% endfor %}
+  {{ _gerrit_connections }}
+zuul_connections_extra: {}
 zuul_connections: "{{ zuul_connections_base |
+                      combine(zuul_connections_gerrit) |
                       combine(zuul_connections_extra) }}"
