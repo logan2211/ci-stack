@@ -1,7 +1,27 @@
 ---
+- name: apt_package_pinning
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
+  version: master
+- name: config_template
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-config_template
+  version: master
 - name: diskimage-builder
   scm: git
   src: https://git.openstack.org/openstack/ansible-role-diskimage-builder
+  version: master
+- name: galera_client
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-galera_client
+  version: master
+- name: galera_server
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-galera_server
+  version: master
+- name: gerrit
+  scm: git
+  src: https://github.com/mrlesmithjr/ansible-gerrit
   version: master
 - name: java
   scm: git

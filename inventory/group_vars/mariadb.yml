@@ -1,4 +1,5 @@
-# Copyright 2018, Logan Vig <logan2211@gmail.com>
+---
+# Copyright 2017, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,24 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default group mappings for ci-stack
-# If using ansible 2.4, you can layer this inventory under another
-# inventory which provides your host mappings by populating either
-# the individual service groups, or the "ci_hosts" meta group
-
-[gerrit:children]
-hosts_ci
-
-[mariadb:children]
-hosts_ci
-
-[nodepool:children]
-hosts_ci
-
-[zookeeper:children]
-hosts_ci
-
-[zuul:children]
-hosts_ci
-
-[hosts_ci]
+galera_root_user: root
+galera_root_password: secrete
