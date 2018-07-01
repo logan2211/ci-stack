@@ -36,6 +36,12 @@ zuul_finger_port: 17979
 zuul_merger_git_user_name: Zuul
 zuul_merger_git_user_email: zuul@zuul.internal
 
+zuul_ssh_keys:
+  - name: nodepool
+    generate: yes
+  - name: gerrit
+    generate: yes
+
 zuul_connections_base:
   zuul-jobs:
     driver: git

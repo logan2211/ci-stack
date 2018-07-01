@@ -17,3 +17,27 @@
   hosts: "{{ zuul_group | default('zuul') }}"
   roles:
     - zuul
+  post_tasks:
+    - name: Generate the Zuul SSH keys
+      include_tasks: common-tasks/ssh-key-generate.yml
+      vars:
+        ssh_key_name: "{{ item.name }}"
+      with_items: "{{ zuul_ssh_keys }}"
+      when:
+        - item.generate | bool
+        - item.file is not defined
+    - name: Ensure the Zuul SSH key path exists
+      file:
+        path: "{{ zuul_user_home }}/.ssh"
+        state: directory
+        owner: "{{ zuul_user_name }}"
+        group: "{{ zuul_user_group }}"
+    - name: Copy the Zuul SSH keys
+      copy:
+        src: "{{ item.file |
+                 default(cistack_cache_path ~ '/' ~ item.name ~ '_id_rsa') }}"
+        dest: "{{ zuul_user_home }}/.ssh/{{ item.name }}_id_rsa"
+        mode: '0600'
+        owner: "{{ zuul_user_name }}"
+        group: "{{ zuul_user_group }}"
+      with_items: "{{ zuul_ssh_keys }}"
