@@ -14,3 +14,5 @@
 # limitations under the License.
 
 cistack_venv_base: /opt/ci-stack/venvs
+
+zookeeper_servers: "{{ groups[zookeeper_group | default('zookeeper')] }}"

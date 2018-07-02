@@ -17,9 +17,7 @@
 nodepool_pip_virtualenv_python: /usr/bin/python3
 nodepool_pip_virtualenv: "{{ cistack_venv_base }}/nodepool"
 
-nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml"
-
-zookeeper_servers: "{{ groups[zookeeper_group | default('zookeeper')] }}"
+nodepool_file_nodepool_yaml_src: "{{ playbook_dir }}/templates/nodepool/nodepool.yaml.j2"
 
 nodepool_config: "{{ nodepool_base_config | combine(nodepool_extra_config,
                                                     recursive=True) }}"
